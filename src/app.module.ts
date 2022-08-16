@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
+import { MongooseModule } from '@nestjs/mongoose';
+import { TypeProjectModule } from './Api/TypeProject/typeProject.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { TypeProjectModule } from './src/api/type-project/type-project/type-project.module';
-import { TypeProjecModule } from './type-project/api/type-projec/type-projec.module';
 
 @Module({
-  imports: [TypeProjectModule, TypeProjecModule],
+  imports: [MongooseModule.forRoot('mongodb://localhost:27017/projectmanager'),TypeProjectModule],
   controllers: [AppController],
   providers: [AppService],
 })

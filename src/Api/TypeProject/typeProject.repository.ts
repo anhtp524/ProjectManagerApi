@@ -8,10 +8,24 @@ import { TypeProject, TypeProjectDocument } from "./typeProject.schema";
 export class TypeProjectRepository {
     constructor(@InjectModel(TypeProject.name) private typeProjectModel: Model<TypeProjectDocument>) {}
     
-    async createType(projectype: CreateProjectTypeDto) {
+    async create(projectype: CreateProjectTypeDto) {
         const newType = new this.typeProjectModel(projectype)
         return newType.save()
     }
 
-    async 
+    async getAll() {
+        return this.typeProjectModel.find()
+    }
+
+    async getById(_id: string) {
+        return this.typeProjectModel.findById(_id)
+    }
+
+    async update(_id: string,item: UpdateProjectTypeDto) {
+        return this.typeProjectModel.findByIdAndUpdate({_id: _id}, item)
+    }
+
+    async delete(_id: string) {
+        return this.typeProjectModel.findByIdAndDelete(_id)
+    }
 }
