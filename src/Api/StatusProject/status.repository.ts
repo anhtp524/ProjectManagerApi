@@ -4,8 +4,6 @@ import { Model } from "mongoose";
 import { CreateStatusDto, UpdateStatusDto } from "./dto/status.dto";
 import { StatusDocument, StatusProject } from "./status.schema";
 
-
-
 @Injectable()
 export class StatusRepository {
     constructor(@InjectModel(StatusProject.name) private statusModel: Model<StatusDocument>) {}
