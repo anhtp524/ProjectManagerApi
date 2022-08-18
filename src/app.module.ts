@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { CustomerModule } from './Api/Customer/customer.module';
 import { EmployeeModule } from './Api/Employee/employee.module';
 import { StatusModule } from './Api/StatusProject/status.module';
 import { TechnologyModule } from './Api/Technology/technology.module';
@@ -12,7 +13,8 @@ import { AppService } from './app.service';
     TypeProjectModule, 
     StatusModule, 
     TechnologyModule,
-    EmployeeModule], 
+    EmployeeModule,
+    CustomerModule], 
   controllers: [AppController],
   providers: [AppService],
 })
