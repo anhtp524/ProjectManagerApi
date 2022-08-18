@@ -7,23 +7,23 @@ import { StatusRepository } from "./status.repository";
 export class StatusService {
     constructor(private statusRepo: StatusRepository) {}
 
-    createType(newStatus: CreateStatusDto) {
+    createStatus(newStatus: CreateStatusDto) {
         return this.statusRepo.create(newStatus)
     }
 
-    getAllType() {
+    getAllStatus() {
         return this.statusRepo.getAll()
     }
 
-    getTypeById(id: string) {
+    getStatusById(id: string) {
         return this.statusRepo.getById(id)
     }
 
-    updateType(id: string, updateStatus: UpdateStatusDto) {
+    updateStatus(id: string, updateStatus: UpdateStatusDto) {
         return this.statusRepo.update(id, updateStatus)
     }
 
-    deleteType(id: string) {
+    deleteStatus(id: string) {
         return this.statusRepo.delete(id)
     }
 }

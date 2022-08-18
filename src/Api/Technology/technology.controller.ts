@@ -7,27 +7,27 @@ export class TechnologyController {
     constructor(private technologyService: TechnologyService) {}
 
     @Post()
-    createType(@Body() newTech: CreateTechnologyDto) {
-        return this.technologyService.createType(newTech)
+    createTechnology(@Body() newTech: CreateTechnologyDto) {
+        return this.technologyService.createTechnology(newTech)
     }
 
     @Get()
-    getAllTypeProject() {
-        return this.technologyService.getAllType()
+    getAllTechnologyProject() {
+        return this.technologyService.getAllTechnology()
     }
 
     @Get('/:id')
-    getTypeProjectById(@Param('id') id: string) {
-        return this.technologyService.getTypeById(id)
+    getTechnologyProjectById(@Param('id') id: string) {
+        return this.technologyService.getTechnologyById(id)
     }
 
     @Patch('/:id')
-    updateTypeProject(@Param('id') id: string, @Body() updateTech: UpdateTechnologyDto) {
-        return this.technologyService.updateType(id, updateTech)
+    updateTechnology(@Param('id') id: string, @Body() updateTech: UpdateTechnologyDto) {
+        return this.technologyService.updateTechnology(id, updateTech)
     }
 
     @Delete(':id')
-    deleteTypeProject(@Param('id') id: string) {
-        return this.technologyService.deleteType(id)
+    deleteTechnology(@Param('id') id: string) {
+        return this.technologyService.deleteTechnology(id)
     }
 }

@@ -7,23 +7,23 @@ import { TechnologyRepository } from "./technology.repository";
 export class TechnologyService {
     constructor(private technologyRepo: TechnologyRepository) {}
 
-    createType(newTech: CreateTechnologyDto) {
+    createTechnology(newTech: CreateTechnologyDto) {
         return this.technologyRepo.create(newTech)
     }
 
-    getAllType() {
+    getAllTechnology() {
         return this.technologyRepo.getAll()
     }
 
-    getTypeById(id: string) {
+    getTechnologyById(id: string) {
         return this.technologyRepo.getById(id)
     }
 
-    updateType(id: string, updateTech: UpdateTechnologyDto) {
+    updateTechnology(id: string, updateTech: UpdateTechnologyDto) {
         return this.technologyRepo.update(id, updateTech)
     }
 
-    deleteType(id: string) {
+    deleteTechnology(id: string) {
         return this.technologyRepo.delete(id)
     }
 }

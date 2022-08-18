@@ -7,27 +7,27 @@ export class StatusController {
     constructor(private statusService: StatusService) {}
 
     @Post()
-    createType(@Body() newStatus: CreateStatusDto) {
-        return this.statusService.createType(newStatus)
+    createStatus(@Body() newStatus: CreateStatusDto) {
+        return this.statusService.createStatus(newStatus)
     }
 
     @Get()
-    getAllTypeProject() {
-        return this.statusService.getAllType()
+    getAllStatusProject() {
+        return this.statusService.getAllStatus()
     }
 
     @Get('/:id')
-    getTypeProjectById(@Param('id') id: string) {
-        return this.statusService.getTypeById(id)
+    getStatusProjectById(@Param('id') id: string) {
+        return this.statusService.getStatusById(id)
     }
 
     @Patch('/:id')
-    updateTypeProject(@Param('id') id: string, @Body() updateStatus: UpdateStatusDto) {
-        return this.statusService.updateType(id, updateStatus)
+    updateStatusProject(@Param('id') id: string, @Body() updateStatus: UpdateStatusDto) {
+        return this.statusService.updateStatus(id, updateStatus)
     }
 
     @Delete(':id')
-    deleteTypeProject(@Param('id') id: string) {
-        return this.statusService.deleteType(id)
+    deleteStatusProject(@Param('id') id: string) {
+        return this.statusService.deleteStatus(id)
     }
 }
