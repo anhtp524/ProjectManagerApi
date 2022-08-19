@@ -12,22 +12,22 @@ export class EmployeeController {
     }
 
     @Get()
-    getAllEmployeeProject() {
+    getAllEmployee() {
         return this.employeeService.getAllEmployee()
     }
 
     @Get('/:id')
-    getEmployeeProjectById(@Param('id') id: string) {
+    getEmployeeById(@Param('id') id: string) {
         return this.employeeService.getEmployeeById(id)
     }
 
     @Patch('/:id')
-    updateEmployeeProject(@Param('id') id: string, @Body() updateEmployee: UpdateEmployeeDto) {
+    updateEmployee(@Param('id') id: string, @Body() updateEmployee: UpdateEmployeeDto) {
         return this.employeeService.updateEmployee(id, updateEmployee)
     }
 
     @Delete(':id')
-    deleteEmployeeProject(@Param('id') id: string) {
+    deleteEmployee(@Param('id') id: string) {
         return this.employeeService.deleteEmployee(id)
     }
 }

@@ -12,12 +12,12 @@ export class TechnologyController {
     }
 
     @Get()
-    getAllTechnologyProject() {
+    getAllTechnology() {
         return this.technologyService.getAllTechnology()
     }
 
     @Get('/:id')
-    getTechnologyProjectById(@Param('id') id: string) {
+    getTechnologyById(@Param('id') id: string) {
         return this.technologyService.getTechnologyById(id)
     }
 

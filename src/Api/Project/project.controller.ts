@@ -12,22 +12,22 @@ export class ProjectController {
     }
 
     @Get()
-    getAllProjectProject() {
+    getAllProject() {
         return this.projectService.getAllProject()
     }
 
     @Get('/:id')
-    getProjectProjectById(@Param('id') id: string) {
+    getProjectById(@Param('id') id: string) {
         return this.projectService.getProjectById(id)
     }
 
     @Patch('/:id')
-    updateProjectProject(@Param('id') id: string, @Body() updateProject: UpdateProjectDto) {
+    updateProject(@Param('id') id: string, @Body() updateProject: UpdateProjectDto) {
         return this.projectService.updateProject(id, updateProject)
     }
 
     @Delete(':id')
-    deleteProjectProject(@Param('id') id: string) {
+    deleteProject(@Param('id') id: string) {
         return this.projectService.deleteProject(id)
     }
 }
