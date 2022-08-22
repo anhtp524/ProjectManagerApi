@@ -22,7 +22,7 @@ export class TypeProjectRepository {
     }
 
     async update(_id: string,item: UpdateProjectTypeDto) {
-        return this.typeProjectModel.findByIdAndUpdate({_id: _id}, item)
+        return this.typeProjectModel.findByIdAndUpdate({_id: _id}, {$set: item})
     }
 
     async delete(_id: string) {

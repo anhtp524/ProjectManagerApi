@@ -9,6 +9,7 @@ import { TechnologyModule } from './Api/Technology/technology.module';
 import { TypeProjectModule } from './Api/TypeProject/typeProject.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AuthModule } from './Auth/auth.module';
 
 @Module({
   imports: [MongooseModule.forRoot('mongodb://localhost:27017/projectmanager'),
@@ -18,7 +19,8 @@ import { AppService } from './app.service';
     EmployeeModule,
     CustomerModule,
     ProjectModule,
-    AccountModule
+    AccountModule,
+    AuthModule
   ], 
   controllers: [AppController],
   providers: [AppService],

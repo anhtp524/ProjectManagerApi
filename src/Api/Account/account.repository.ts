@@ -10,22 +10,26 @@ export class AccountRepository {
     
     async create(newItem: any) {
         const newAccount = new this.accountModel(newItem)
-        return newAccount.save()
+        return await newAccount.save()
     }
 
     async getAll() {
-        return this.accountModel.find()
+        return await this.accountModel.find()
     }
 
     async getById(_id: string) {
-        return this.accountModel.findById(_id)
+        return await this.accountModel.findById(_id)
     }
 
     async update(_id: string,item: any) {
-        return this.accountModel.findByIdAndUpdate({_id: _id}, item)
+        return await this.accountModel.findByIdAndUpdate(_id, item).exec()
     }
 
     async delete(_id: string) {
-        return this.accountModel.findByIdAndDelete(_id)
+        return await this.accountModel.findByIdAndDelete(_id)
+    }
+
+    async findOne(condition: any) {
+        return await this.accountModel.findOne(condition)
     }
 }
