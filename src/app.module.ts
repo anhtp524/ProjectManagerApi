@@ -5,6 +5,7 @@ import { CustomerModule } from './Api/Customer/customer.module';
 import { EmployeeModule } from './Api/Employee/employee.module';
 import { ProjectModule } from './Api/Project/project.module';
 import { StatusModule } from './Api/StatusProject/status.module';
+import { TeamModule } from './Api/Team/team.module';
 import { TechnologyModule } from './Api/Technology/technology.module';
 import { TypeProjectModule } from './Api/TypeProject/typeProject.module';
 import { AppController } from './app.controller';
@@ -20,6 +21,7 @@ import { AuthModule } from './Auth/auth.module';
     CustomerModule,
     ProjectModule,
     AccountModule,
+    TeamModule,
     AuthModule
   ], 
   controllers: [AppController],
