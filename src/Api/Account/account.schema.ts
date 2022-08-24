@@ -20,6 +20,10 @@ export class Account {
     @Prop({required: true})
     role: Role
 
+    @Prop({type: String})
+    refreshToken: string
+
+
 }
 
 export const AccountSchema = SchemaFactory.createForClass(Account)

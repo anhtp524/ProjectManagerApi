@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Put, UseGuards, UseInterceptors } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards, UseInterceptors } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import { RolesGuard } from "src/Auth/guard/role.guard";
 import { AccountService } from "./account.service";
@@ -27,7 +27,7 @@ export class AccountController {
         return this.accountService.getAccountById(id)
     }
 
-    @Put('/:id')
+    @Patch('/:id')
     updateAccout(@Param('id') id: string, @Body() updateCustomer: UpdateAccountDto) {
         return this.accountService.updateAccount(id, updateCustomer)
     }

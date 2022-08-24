@@ -20,18 +20,17 @@ export class CreateAccountDto {
 }
 
 export class UpdateAccountDto {
-    @IsNotEmpty()
-    @IsString()
-    username: string
+    
+    username?: string
 
-    @IsNotEmpty()
-    @IsString()
-    password: string
+    
+    password?: string
 
-    @IsNotEmpty()
-    @IsString()
-    name: string
+    
+    name?: string
 
-    @IsNotEmpty()
-    role: Role
+   
+    role?: Role
+
+    refreshToken?: string
 }

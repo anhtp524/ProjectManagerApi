@@ -6,7 +6,7 @@ import { AuthService } from "./auth.service";
 import { JwtStrategy } from "./strategy/jwt.strategy";
 
 @Module({
-    imports: [AccountModule,JwtModule.register({secret:"superKey"})],
+    imports: [AccountModule,JwtModule.register({})],
     controllers: [AuthController],
     providers: [AuthService, JwtStrategy]
 })
