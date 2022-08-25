@@ -18,8 +18,8 @@ export class EmployeeService {
         return this.employeeRepo.create(newEmployee)
     }
 
-    getAllEmployee() {
-        return this.employeeRepo.getAll()
+    getAllEmployee(limit ?: number, page ?: number) {
+        return this.employeeRepo.getAll(limit, page)
     }
 
     getEmployeeById(id: string) {

@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from "@nestjs/common";
 import { CreateTeamDto, UpdateTeamDto } from "./dto/team.dto";
 import { TeamService } from "./team.service";
 
@@ -13,8 +13,8 @@ export class TeamController {
     }
 
     @Get()
-    getAllTeam() {
-        return this.teamService.getAllTeam()
+    getAllTeam(@Query() {limit, page} : {limit: number, page: number}) {
+        return this.teamService.getAllTeam(limit, page)
     }
 
     @Get('/:id')

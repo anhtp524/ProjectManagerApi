@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { CreateProjectTypeDto, UpdateProjectTypeDto } from "./dto/typeProject.dto";
@@ -13,8 +13,27 @@ export class TypeProjectRepository {
         return newType.save()
     }
 
-    async getAll() {
-        return this.typeProjectModel.find()
+    async getAll(limit ?: number, page :number = 1) {
+        const totalDocs = await this.typeProjectModel.countDocuments()
+        const totalPage = Math.ceil(totalDocs / limit)
+
+        if(limit) {
+            if(page <= totalPage) {
+                const docsView = await this.typeProjectModel  
+                                    .find({})
+                                    .skip((page - 1) * limit) 
+                                    .limit(limit)
+                return {
+                    currentPage: page,
+                    totalPage: totalPage,
+                    data: docsView
+                }
+            }
+            else throw new HttpException("Page is not exis", HttpStatus.NOT_FOUND)
+        }
+        else {
+            return this.typeProjectModel.find()
+        }     
     }
 
     async getById(_id: string) {

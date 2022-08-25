@@ -10,8 +10,8 @@ export class TypeProjectService {
         return this.typeProjectRepo.create(newType)
     }
 
-    getAllType() {
-        return this.typeProjectRepo.getAll()
+    getAllType(limit ?: number, page ?: number) {
+        return this.typeProjectRepo.getAll(limit, page)
     }
 
     getTypeById(id: string) {

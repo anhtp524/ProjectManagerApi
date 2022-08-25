@@ -33,8 +33,8 @@ export class ProjectService {
         return this.projectRepo.create(newProject)
     }
 
-    getAllProject() {
-        return this.projectRepo.getAll()
+    getAllProject(limit ?: number, page ?: number) {
+        return this.projectRepo.getAll(limit, page)
     }
 
     getProjectById(id: string) {

@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from "@nestjs/common";
 import { CreateEmployeeDto, UpdateEmployeeDto } from "./dto/employee.dto";
 import { EmployeeService } from "./employee.service";
 
@@ -12,8 +12,8 @@ export class EmployeeController {
     }
 
     @Get()
-    getAllEmployee() {
-        return this.employeeService.getAllEmployee()
+    getAllEmployee(@Query() {limit, page} : {limit: number, page: number}) {
+        return this.employeeService.getAllEmployee(limit, page)
     }
 
     @Get('/:id')

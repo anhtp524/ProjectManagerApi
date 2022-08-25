@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from "@nestjs/common";
 import { CustomerService } from "./customer.service";
 import { CreateCustomerDto, UpdateCustomerDto } from "./dto/customer.dto";
 
@@ -12,8 +12,8 @@ export class CustomerController {
     }
 
     @Get()
-    getAllCustomer() {
-        return this.customerService.getAllCustomer()
+    getAllCustomer(@Query() {limit, page}: {limit: number, page: number}) {
+        return this.customerService.getAllCustomer(limit, page)
     }
 
     @Get('/:id')

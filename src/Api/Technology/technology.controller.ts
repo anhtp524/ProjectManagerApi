@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from "@nestjs/common";
 import { CreateTechnologyDto, UpdateTechnologyDto } from "./dto/technology.dto";
 import { TechnologyService } from "./technology.service";
 
@@ -12,8 +12,8 @@ export class TechnologyController {
     }
 
     @Get()
-    getAllTechnology() {
-        return this.technologyService.getAllTechnology()
+    getAllTechnology(@Query() {limit, page} : {limit: number, page: number}) {
+        return this.technologyService.getAllTechnology(limit, page)
     }
 
     @Get('/:id')

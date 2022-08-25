@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { Team, TeamDocument } from "./team.schema";
@@ -13,12 +13,33 @@ export class TeamRepository {
         return await newTeam.save()
     }
 
-    async getAll() {
-        return await this.teamModel
-                .find({})
-                .populate('manager', "name")
-                .populate('member', 'name')
-                .populate('project', 'name')
+    async getAll(limit ?: number, page :number = 1) {
+        const totalDocs = await this.teamModel.countDocuments()
+        const totalPage = Math.ceil(totalDocs / limit)
+
+        if(limit) {
+            if(page <= totalPage) {
+                const docsView = await this.teamModel  
+                                    .find({})
+                                    .skip((page - 1) * limit) 
+                                    .limit(limit)
+                                    .populate('manager', "name")
+                                    .populate('member', 'name')
+                                    .populate('project', 'name')
+                return {
+                    currentPage: page,
+                    totalPage: totalPage,
+                    data: docsView
+                }
+            }
+            else throw new HttpException("Page is not exis", HttpStatus.NOT_FOUND)
+        }
+        else {
+            return this.teamModel.find({})
+                                .populate('manager', "name")
+                                .populate('member', 'name')
+                                .populate('project', 'name')
+        }     
     }
 
     async getById(_id: string) {

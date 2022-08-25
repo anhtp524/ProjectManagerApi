@@ -11,8 +11,8 @@ export class CustomerService {
         return this.customerRepo.create(newCustomer)
     }
 
-    getAllCustomer() {
-        return this.customerRepo.getAll()
+    getAllCustomer(limit ?: number, page ?: number) {
+        return this.customerRepo.getAll(limit, page)
     }
 
     getCustomerById(id: string) {

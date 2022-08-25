@@ -11,8 +11,8 @@ export class StatusService {
         return this.statusRepo.create(newStatus)
     }
 
-    getAllStatus() {
-        return this.statusRepo.getAll()
+    getAllStatus(limit ?: number, page ?: number) {
+        return this.statusRepo.getAll(limit, page)
     }
 
     getStatusById(id: string) {

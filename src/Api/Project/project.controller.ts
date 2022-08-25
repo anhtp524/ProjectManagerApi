@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from "@nestjs/common";
 import { CreateProjectDto, UpdateProjectDto } from "./dto/project.dto";
 import { ProjectService } from "./project.service";
 
@@ -12,7 +12,7 @@ export class ProjectController {
     }
 
     @Get()
-    getAllProject() {
+    getAllProject(@Query() {limit, page} : {limit: number, page: number}) {
         return this.projectService.getAllProject()
     }
 

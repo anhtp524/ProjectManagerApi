@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { Project, ProjectDocument } from "./project.schema";
@@ -13,15 +13,39 @@ export class ProjectRepository {
         return newProject.save()
     }
 
-    async getAll() {
-        return this.projectModel
-                .find({})
-                .populate('typeProject' ,'name')
-                .populate('status', 'name')
-                .populate('technology', 'name')
-                .populate('member')
-                .populate('customer', 'name')
-                .exec()
+    async getAll(limit ?: number, page :number = 1) {
+        const totalDocs = await this.projectModel.countDocuments()
+        const totalPage = Math.ceil(totalDocs / limit)
+
+        if(limit) {
+            if(page <= totalPage) {
+                const docsView = await this.projectModel  
+                                    .find({})
+                                    .skip((page - 1) * limit) 
+                                    .limit(limit)
+                                    .populate('typeProject' ,'name')
+                                    .populate('status', 'name')
+                                    .populate('technology', 'name')
+                                    .populate('member')
+                                    .populate('customer', 'name')
+                                    .exec()
+                return {
+                    currentPage: page,
+                    totalPage: totalPage,
+                    data: docsView
+                }
+            }
+            else throw new HttpException("Page is not exis", HttpStatus.NOT_FOUND)
+        }
+        else {
+            return await this.projectModel.find({})
+                                    .populate('typeProject' ,'name')
+                                    .populate('status', 'name')
+                                    .populate('technology', 'name')
+                                    .populate('member')
+                                    .populate('customer', 'name')
+                                    .exec()
+        }     
     }
 
     async getById(_id: string) {

@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from "@nestjs/common";
 import { CreateStatusDto, UpdateStatusDto } from "./dto/status.dto";
 import { StatusService } from "./status.service";
 
@@ -12,8 +12,8 @@ export class StatusController {
     }
 
     @Get()
-    getAllStatusProject() {
-        return this.statusService.getAllStatus()
+    getAllStatusProject(@Query() {limit, page}: {limit: number, page: number}) {
+        return this.statusService.getAllStatus(limit, page)
     }
 
     @Get('/:id')

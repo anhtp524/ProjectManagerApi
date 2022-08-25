@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { CreateTechnologyDto, UpdateTechnologyDto } from "./dto/technology.dto";
@@ -13,8 +13,27 @@ export class TechnologyRepository {
         return newTechnologyProject.save()
     }
 
-    async getAll() {
-        return this.technologyModel.find()
+    async getAll(limit ?: number, page :number = 1) {
+        const totalDocs = await this.technologyModel.countDocuments()
+        const totalPage = Math.ceil(totalDocs / limit)
+
+        if(limit) {
+            if(page <= totalPage) {
+                const docsView = await this.technologyModel  
+                                    .find({})
+                                    .skip((page - 1) * limit) 
+                                    .limit(limit)
+                return {
+                    currentPage: page,
+                    totalPage: totalPage,
+                    data: docsView
+                }
+            }
+            else throw new HttpException("Page is not exis", HttpStatus.NOT_FOUND)
+        }
+        else {
+            return this.technologyModel.find()
+        }     
     }
 
     async getById(_id: string) {

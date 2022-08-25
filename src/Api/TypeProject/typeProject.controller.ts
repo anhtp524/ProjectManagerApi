@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from "@nestjs/common";
 import { CreateProjectTypeDto, UpdateProjectTypeDto } from "./dto/typeProject.dto";
 import { TypeProjectService } from "./typeProject.service";
 
@@ -12,8 +12,8 @@ export class TypeProjectController {
     }
 
     @Get()
-    getAllTypeProject() {
-        return this.typeService.getAllType()
+    getAllTypeProject(@Query() {limit, page}: {limit: number, page: number}) {
+        return this.typeService.getAllType(limit, page)
     }
 
     @Get('/:id')

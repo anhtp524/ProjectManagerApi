@@ -28,8 +28,8 @@ export class TeamService {
         return this.teamRepo.create(newTeam)
     }
 
-    getAllTeam() {
-        return this.teamRepo.getAll()
+    getAllTeam(limit ?: number, page ?: number) {
+        return this.teamRepo.getAll(limit, page)
     }
 
     getTeamById(id: string) {

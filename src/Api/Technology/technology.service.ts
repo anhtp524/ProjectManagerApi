@@ -11,8 +11,8 @@ export class TechnologyService {
         return this.technologyRepo.create(newTech)
     }
 
-    getAllTechnology() {
-        return this.technologyRepo.getAll()
+    getAllTechnology(limit ?: number, page ?: number) {
+        return this.technologyRepo.getAll(limit, page)
     }
 
     getTechnologyById(id: string) {
