@@ -1,11 +1,17 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
+import { ProjectRepository } from "../Project/project.repository";
+import { TeamRepository } from "../Team/team.repository";
 import { Employee, EmployeeDocument } from "./employee.schema";
 
 @Injectable()
 export class EmployeeRepository {
-    constructor(@InjectModel(Employee.name) private employeeModel: Model<EmployeeDocument>) {}
+    constructor(
+        @InjectModel(Employee.name) private employeeModel: Model<EmployeeDocument>,
+        private projectRepo: ProjectRepository,
+        private teamRepo: TeamRepository
+        ) {}
     
     async create(newItem: any) {
         const newEmployee = new this.employeeModel(newItem)
@@ -45,6 +51,20 @@ export class EmployeeRepository {
     }
 
     async delete(_id: string) {
-        return this.employeeModel.findByIdAndDelete(_id)
+        const findEmployee = await this.employeeModel.find({_id: _id})
+        if (findEmployee){
+            const employeeInProject = await this.projectRepo.findOne({member:_id})
+            const employeeInTeam = await this.teamRepo.findOne({member:_id})
+            if ((!employeeInProject || employeeInProject.length == 0) && (!employeeInTeam    || employeeInTeam .length == 0)) {
+                await this.employeeModel.findByIdAndDelete(_id)
+                return "You have successfully deleted"
+            }
+            else throw new HttpException("You can not delete", HttpStatus.NOT_ACCEPTABLE)
+        }
+        else throw new HttpException("Not found",HttpStatus.NOT_FOUND)
+    }
+
+    async findOne(condition: any) {
+        return this.employeeModel.find(condition)
     }
 }

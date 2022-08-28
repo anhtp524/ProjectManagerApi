@@ -1,12 +1,15 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
+import { TeamRepository } from "../Team/team.repository";
 import { Project, ProjectDocument } from "./project.schema";
 ;
 
 @Injectable()
 export class ProjectRepository {
-    constructor(@InjectModel(Project.name) private projectModel: Model<ProjectDocument>) {}
+    constructor(
+        @InjectModel(Project.name) private projectModel: Model<ProjectDocument>,
+        private teamRepo: TeamRepository) {}
     
     async create(newItem: any) {
         const newProject = new this.projectModel(newItem)
@@ -26,7 +29,7 @@ export class ProjectRepository {
                                     .populate('typeProject' ,'name')
                                     .populate('status', 'name')
                                     .populate('technology', 'name')
-                                    .populate('member')
+                                    .populate('member', 'name')
                                     .populate('customer', 'name')
                                     .exec()
                 return {
@@ -42,7 +45,7 @@ export class ProjectRepository {
                                     .populate('typeProject' ,'name')
                                     .populate('status', 'name')
                                     .populate('technology', 'name')
-                                    .populate('member')
+                                    .populate('member', 'name')
                                     .populate('customer', 'name')
                                     .exec()
         }     
@@ -54,8 +57,12 @@ export class ProjectRepository {
                 .populate('typeProject' ,'name')
                 .populate('status', 'name')
                 .populate('technology', 'name')
-                .populate('member')
+                .populate('member','name')
                 .populate('customer', 'name')
+    }
+
+    async findOne(condition: any) {
+        return await this.projectModel.find(condition)
     }
 
     async update(_id: string,item: any) {
@@ -63,6 +70,19 @@ export class ProjectRepository {
     }
 
     async delete(_id: string) {
-        return this.projectModel.findByIdAndDelete(_id)
+        const findProject = await this.projectModel.find({_id: _id})
+        if (findProject){
+            const projectInTeam = await this.teamRepo.findOne({project: _id})
+            if (!projectInTeam || projectInTeam.length == 0) {
+                await this.projectModel.findByIdAndDelete(_id)
+                return "You have successfully deleted"
+            }
+            else throw new HttpException("You can not delete", HttpStatus.NOT_ACCEPTABLE)
+        }
+        else throw new HttpException("Not found",HttpStatus.NOT_FOUND)
+    }
+
+    async getMemberInProject(nameProject: string) {
+        return this.projectModel.find({name: nameProject}, "member").populate('member', 'name')
     }
 }

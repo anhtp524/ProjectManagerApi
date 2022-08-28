@@ -1,3 +1,4 @@
+import { Type } from "class-transformer";
 import { IsArray, IsDate, IsNotEmpty, IsString } from "class-validator";
 
 export class CreateProjectDto {
@@ -13,12 +14,10 @@ export class CreateProjectDto {
 
     @IsString()
     status: string
-
-    @IsString()
+    
     @IsArray()
     technology: string[]
 
-    @IsString()
     @IsArray()
     member: string[]
 
@@ -26,6 +25,7 @@ export class CreateProjectDto {
     customer: string
 
     @IsDate()
+    @Type(() => Date)
     startDate: Date
 }
 

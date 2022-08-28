@@ -15,6 +15,7 @@ export class EmployeeController {
     getAllEmployee(@Query() {limit, page} : {limit: number, page: number}) {
         return this.employeeService.getAllEmployee(limit, page)
     }
+    
 
     @Get('/:id')
     getEmployeeById(@Param('id') id: string) {
@@ -30,4 +31,6 @@ export class EmployeeController {
     deleteEmployee(@Param('id') id: string) {
         return this.employeeService.deleteEmployee(id)
     }
+
+
 }

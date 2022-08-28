@@ -68,4 +68,8 @@ export class ProjectService {
     deleteProject(id: string) {
         return this.projectRepo.delete(id)
     }
+
+    getMember(nameProject: string) {
+        return this.projectRepo.getMemberInProject(nameProject)
+    }
 }

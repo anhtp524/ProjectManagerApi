@@ -1,4 +1,3 @@
-import { Type } from "@nestjs/common";
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import mongoose, { Document, Types } from "mongoose";
 import { Technology } from "../Technology/technology.schema";

@@ -1,12 +1,16 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
+import { ProjectRepository } from "../Project/project.repository";
 import { CreateStatusDto, UpdateStatusDto } from "./dto/status.dto";
 import { StatusDocument, StatusProject } from "./status.schema";
 
 @Injectable()
 export class StatusRepository {
-    constructor(@InjectModel(StatusProject.name) private statusModel: Model<StatusDocument>) {}
+    constructor(
+        @InjectModel(StatusProject.name) private statusModel: Model<StatusDocument>,
+        private projectRepo: ProjectRepository
+    ) {}
     
     async create(newStatus: CreateStatusDto) {
         const newStatusProject = new this.statusModel(newStatus)
@@ -45,6 +49,15 @@ export class StatusRepository {
     }
 
     async delete(_id: string) {
-        return this.statusModel.findByIdAndDelete(_id)
+        const findStatusProject = await this.statusModel.find({_id: _id})
+        if (findStatusProject){
+            const statusInProject = await this.projectRepo.findOne({type:_id})
+            if (!statusInProject || statusInProject.length == 0) {
+                await this.statusModel.findByIdAndDelete(_id)
+                return "You have successfully deleted"
+            }
+            else throw new HttpException("You can not delete", HttpStatus.NOT_ACCEPTABLE)
+        }
+        else throw new HttpException("Not found",HttpStatus.NOT_FOUND)
     }
 }

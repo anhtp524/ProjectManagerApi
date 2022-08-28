@@ -1,3 +1,4 @@
+import { Type } from "class-transformer";
 import { IsArray, IsDate, IsNotEmpty, IsNumber, IsString } from "class-validator";
 
 export class CreateEmployeeDto {
@@ -7,6 +8,7 @@ export class CreateEmployeeDto {
 
     @IsNotEmpty()
     @IsDate()
+    @Type(() => Date)
     birthday: Date
 
     @IsNotEmpty()
@@ -38,7 +40,7 @@ export class UpdateEmployeeDto {
     @IsString()
     address: string;
 
-    @IsNumber()
+    @IsString()
     phoneNumber: string;
 
     @IsArray()

@@ -59,6 +59,14 @@ export class TeamRepository {
     }
 
     async findOne(condition: any) {
-        return await this.teamModel.findOne(condition)
+        return await this.teamModel.find(condition)
+    }
+
+    async getMemberInTeam(nameTeam: string) {
+        return this.teamModel.find({name: nameTeam}, ["member", "name"]).populate('member', 'name')
+    }
+
+    async getProjectInTeam(nameTeam: string) {
+        return this.teamModel.find({name: nameTeam}, ["project","name"]).populate({path: 'project', select: ['name', 'description']})
     }
 }

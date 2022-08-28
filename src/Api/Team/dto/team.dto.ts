@@ -1,3 +1,4 @@
+import { Type } from "class-transformer";
 import { IsArray, IsDate, IsNotEmpty, IsString } from "class-validator";
 
 export class CreateTeamDto {
@@ -11,6 +12,7 @@ export class CreateTeamDto {
 
     @IsNotEmpty()
     @IsDate()
+    @Type(() => Date)
     founding: Date
 
     @IsNotEmpty()

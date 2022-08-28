@@ -17,6 +17,16 @@ export class TeamController {
         return this.teamService.getAllTeam(limit, page)
     }
 
+    @Get('/:name/member')
+    getMember(@Param('name') name: string) {
+        return this.teamService.getMember(name)
+    }
+
+    @Get('/:name/project')
+    getProject(@Param('name') name: string) {
+        return this.teamService.getProject(name)
+    }
+
     @Get('/:id')
     getTeamById(@Param('id') id: string) {
         return this.teamService.getTeamById(id)

@@ -16,6 +16,11 @@ export class ProjectController {
         return this.projectService.getAllProject()
     }
 
+    @Get('/:name/member')
+    getMember(@Param('name') name: string) {
+        return this.projectService.getMember(name)
+    }
+
     @Get('/:id')
     getProjectById(@Param('id') id: string) {
         return this.projectService.getProjectById(id)

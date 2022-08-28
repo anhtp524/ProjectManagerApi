@@ -59,4 +59,12 @@ export class TeamService {
     deleteTeam(id: string) {
         return this.teamRepo.delete(id)
     }
+
+    getMember(nameTeam: string) {
+        return this.teamRepo.getMemberInTeam(nameTeam)
+    }
+
+    getProject(nameTeam: string) {
+        return this.teamRepo.getProjectInTeam(nameTeam)
+    }
 }
