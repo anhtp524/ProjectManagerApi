@@ -16,6 +16,10 @@ export class EmployeeController {
         return this.employeeService.getAllEmployee(limit, page)
     }
     
+    @Get('statistical')
+    countEmployees(@Query() {technology}: {technology: string}) {
+        return this.employeeService.countEmployees(technology)
+    }
 
     @Get('/:id')
     getEmployeeById(@Param('id') id: string) {

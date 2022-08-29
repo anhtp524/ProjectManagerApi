@@ -30,6 +30,6 @@ export class AccountRepository {
     }
 
     async findOne(condition: any) {
-        return await this.accountModel.findOne(condition)
+        return await this.accountModel.findOne(condition).lean()
     }
 }

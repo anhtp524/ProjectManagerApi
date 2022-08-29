@@ -72,4 +72,8 @@ export class ProjectService {
     getMember(nameProject: string) {
         return this.projectRepo.getMemberInProject(nameProject)
     }
+
+    countProjects(status ?: string, type ?: string, technology ?: string, customer ?: string, date ?: string) {
+        return this.projectRepo.countProjectWithCondition(status, type, technology, customer, date)
+    }
 }

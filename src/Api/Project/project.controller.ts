@@ -16,6 +16,11 @@ export class ProjectController {
         return this.projectService.getAllProject()
     }
 
+    @Get('statistical')
+    countProject(@Query() {status, type, technology, customer, date} : {status ?: string, type ?: string, technology ?: string, customer ?: string, date ?: string}) {
+        return this.projectService.countProjects(status, type, technology, customer, date)
+    }
+
     @Get('/:name/member')
     getMember(@Param('name') name: string) {
         return this.projectService.getMember(name)

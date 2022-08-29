@@ -17,7 +17,7 @@ export class AuthService {
         if(!account) throw new UnauthorizedException("Account does not exist");
         const checkPassword = await bcrypt.compare(acc.password, account.password)
         if(!checkPassword) throw new UnauthorizedException("Password is wrong");
-        const accessToken = await this.signToken(account, "accessKey", "60s")
+        const accessToken = await this.signToken(account, "accessKey", "5m")
         const refreshToken = await  this.signToken(account, "refreshKey", "2592000s")
         await this.accountRepo.update(account._id, {refreshToken: refreshToken})
         return {
@@ -43,7 +43,7 @@ export class AuthService {
 
             const payload = await this.jwtService.verify(token, {secret: "refreshKey"})
             if(!payload) throw new HttpException("Invalid token", HttpStatus.UNAUTHORIZED)
-            const newAccessToken = this.jwtService.sign({sub: payload.sub}, {secret: "accessKey", expiresIn: "60s"})
+            const newAccessToken = this.jwtService.sign({sub: payload.sub}, {secret: "accessKey", expiresIn: "5m"})
             return {
                 new_accsessToken: newAccessToken
             }

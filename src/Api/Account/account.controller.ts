@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards, UseInterceptors } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Post, Req, UseGuards, UseInterceptors } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import { RolesGuard } from "src/Auth/guard/role.guard";
 import { AccountService } from "./account.service";
@@ -6,6 +6,7 @@ import { CreateAccountDto, UpdateAccountDto } from "./dto/account.dto";
 import { Role } from "./enum/role.enum";
 
 @Controller('/account')
+@UseGuards(AuthGuard('jwt'), new RolesGuard(Role.ADMIN))
 export class AccountController {
     constructor(private accountService: AccountService) {}
 
@@ -17,9 +18,13 @@ export class AccountController {
     //@UseInterceptors(Inter)
     
     @Get()
-    @UseGuards(AuthGuard('jwt'), new RolesGuard(Role.ADMIN))
     getAllAccout() {
         return this.accountService.getAllAccount()
+    }
+
+    @Get('/infor')
+    getInfor(@Req() req) {
+        return req.user
     }
 
     @Get('/:id')

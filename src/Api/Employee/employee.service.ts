@@ -40,4 +40,8 @@ export class EmployeeService {
     deleteEmployee(id: string) {
         return this.employeeRepo.delete(id)
     }
+
+    countEmployees(technology ?: string) {
+        return this.employeeRepo.countEmployee(technology)
+    }
 }

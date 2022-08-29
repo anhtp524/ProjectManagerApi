@@ -16,7 +16,7 @@ export class JwtStrategy extends PassportStrategy(Strategy,'jwt') {
 
     async validate(payload: {sub: string}) {    
         let account = await this.accountRepository.findOne({username:payload.sub})
-        delete account.password
+       delete account.password
         return account
     }
 }

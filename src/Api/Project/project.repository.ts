@@ -1,5 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
+import e, { query } from "express";
 import { Model } from "mongoose";
 import { TeamRepository } from "../Team/team.repository";
 import { Project, ProjectDocument } from "./project.schema";
@@ -84,5 +85,44 @@ export class ProjectRepository {
 
     async getMemberInProject(nameProject: string) {
         return this.projectModel.find({name: nameProject}, "member").populate('member', 'name')
+    }
+
+    async countProjectWithCondition(status ?: string, type ?: string, technology ?: string, customer ?: string, date ?: string) {
+        let filter
+        try {
+            if(date) {
+                filter = {
+                    status: status,
+                    typeProject: type,
+                    technology: technology,
+                    customer: customer,
+                    startDate: new Date(date)
+                }
+            }
+            else {
+                filter = {
+                    status: status,
+                    typeProject: type,
+                    technology: technology,
+                    customer: customer,
+                }
+            }
+            
+            let query = {}
+            for (let [key,value] of Object.entries(filter)) {
+                if (value) {
+                    query[key] = value
+                }
+            }
+            
+            const numberProject = await this.projectModel.countDocuments(query)
+                return {
+                    filter: query,
+                    amount : numberProject
+                }
+        }
+        catch(err) {
+            return new HttpException("Not count", HttpStatus.NOT_FOUND)
+        }
     }
 }
