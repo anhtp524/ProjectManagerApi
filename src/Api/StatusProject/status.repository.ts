@@ -50,7 +50,7 @@ export class StatusRepository {
 
     async delete(_id: string) {
         const findStatusProject = await this.statusModel.find({_id: _id})
-        if (findStatusProject){
+        if (findStatusProject && findStatusProject.length !== 0){
             const statusInProject = await this.projectRepo.findOne({type:_id})
             if (!statusInProject || statusInProject.length == 0) {
                 await this.statusModel.findByIdAndDelete(_id)

@@ -52,10 +52,10 @@ export class EmployeeRepository {
 
     async delete(_id: string) {
         const findEmployee = await this.employeeModel.find({_id: _id})
-        if (findEmployee){
+        if (findEmployee && findEmployee.length !== 0){
             const employeeInProject = await this.projectRepo.findOne({member:_id})
             const employeeInTeam = await this.teamRepo.findOne({member:_id})
-            if ((!employeeInProject || employeeInProject.length == 0) && (!employeeInTeam    || employeeInTeam .length == 0)) {
+            if ((!employeeInProject || employeeInProject.length == 0) && (!employeeInTeam || employeeInTeam.length == 0)) {
                 await this.employeeModel.findByIdAndDelete(_id)
                 return "You have successfully deleted"
             }

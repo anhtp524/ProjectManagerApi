@@ -50,7 +50,7 @@ export class TypeProjectRepository {
 
     async delete(_id: string) {
         const findTypeProject = await this.typeProjectModel.find({_id: _id})
-        if (findTypeProject){
+        if (findTypeProject && findTypeProject.length !== 0){
             const typeInProject = await this.projectRepo.findOne({type:_id})
             if (!typeInProject || typeInProject.length == 0) {
                 await this.typeProjectModel.findByIdAndDelete(_id)

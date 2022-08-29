@@ -71,7 +71,7 @@ export class ProjectRepository {
 
     async delete(_id: string) {
         const findProject = await this.projectModel.find({_id: _id})
-        if (findProject){
+        if (findProject && findProject.length !== 0){
             const projectInTeam = await this.teamRepo.findOne({project: _id})
             if (!projectInTeam || projectInTeam.length == 0) {
                 await this.projectModel.findByIdAndDelete(_id)

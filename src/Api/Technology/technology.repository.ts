@@ -52,7 +52,7 @@ export class TechnologyRepository {
 
     async delete(_id: string) {
         const findTech = await this.technologyModel.find({_id: _id})
-        if (findTech){
+        if (findTech && findTech.length !== 0){
             const techInProject = await this.projectRepo.findOne({technology:_id})
             const techInEmployee = await this.employeeRepo.findOne({technology:_id})
             if ((!techInProject || techInProject.length == 0) && (!techInEmployee || techInEmployee.length == 0)) {
