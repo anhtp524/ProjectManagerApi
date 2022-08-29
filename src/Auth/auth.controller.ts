@@ -17,9 +17,9 @@ export class AuthController {
         return this.authService.signAccessTokenFromRefreshToken(token)
     }
 
-    // @Post('/logout')
-    // async logout(@Body() id: string) { 
-    //     return this.authService.logOut(id)
-    // }
+    @Post('/logout')
+    async logout(@Body() {id}: {id:string}) { 
+        return this.authService.logOut(id)
+    }
 
 }

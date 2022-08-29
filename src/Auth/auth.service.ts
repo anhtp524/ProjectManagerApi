@@ -21,6 +21,7 @@ export class AuthService {
         const refreshToken = await  this.signToken(account, "refreshKey", "2592000s")
         await this.accountRepo.update(account._id, {refreshToken: refreshToken})
         return {
+            id: account._id,
             username: account.username,
             access_token: accessToken,
             refresh_token: refreshToken
@@ -53,8 +54,8 @@ export class AuthService {
         }
     }
 
-    // async logOut(id: string) {
-    //     await this.accountRepo.update(id, {refreshToken: null})
-    //     return "Logout Success"
-    // }
+     async logOut(id: string) {
+        await this.accountRepo.update(id, {refreshToken: null})
+        return "Logout Success"
+    }
 }   

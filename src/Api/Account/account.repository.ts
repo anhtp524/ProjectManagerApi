@@ -22,7 +22,7 @@ export class AccountRepository {
     }
 
     async update(_id: string,item: any) {
-        return await this.accountModel.findByIdAndUpdate(_id, item).exec()
+        return await this.accountModel.findByIdAndUpdate({_id: _id}, item)
     }
 
     async delete(_id: string) {
