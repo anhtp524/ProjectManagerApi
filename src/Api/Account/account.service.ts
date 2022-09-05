@@ -18,8 +18,8 @@ export class AccountService {
         return this.accountRepo.create(newAccount)
     }
 
-    getAllAccount() {
-        return this.accountRepo.getAll()
+    getAllAccount(limit ?: number, page ?: number) {
+        return this.accountRepo.getAll(limit, page)
     }
 
     getAccountById(id: string) {

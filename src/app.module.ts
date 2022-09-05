@@ -9,8 +9,6 @@ import { StatusModule } from './Api/StatusProject/status.module';
 import { TeamModule } from './Api/Team/team.module';
 import { TechnologyModule } from './Api/Technology/technology.module';
 import { TypeProjectModule } from './Api/TypeProject/typeProject.module';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { AuthModule } from './Auth/auth.module';
 import { configuration } from './Config/configuration';
 
@@ -31,7 +29,5 @@ import { configuration } from './Config/configuration';
     TeamModule,
     AuthModule
   ], 
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}

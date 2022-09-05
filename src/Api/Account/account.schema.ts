@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { Exclude } from "class-transformer";
 import { Document } from "mongoose";
+import { ExcludeProperty } from "nestjs-mongoose-exclude";
 import { Role } from "./enum/role.enum";
 
 export type AccountDocument = Account & Document
@@ -11,7 +11,7 @@ export class Account {
     username: string
 
     @Prop({required: true})
-    @Exclude()
+    @ExcludeProperty()
     password: string
 
     @Prop({required: true})

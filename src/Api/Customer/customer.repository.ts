@@ -22,23 +22,18 @@ export class CustomerRepository {
         const totalDocs = await this.customerModel.countDocuments()
         const totalPage = Math.ceil(totalDocs / limit)
 
-        if(limit) {
-            if(page <= totalPage) {
-                const docsView = await this.customerModel  
+        if(!limit) return this.customerModel.find()
+        if(page > totalPage) throw new HttpException("Page is not exist", HttpStatus.NOT_FOUND)
+        const docsView = await this.customerModel  
                                     .find({})
                                     .skip((page - 1) * limit) 
                                     .limit(limit)
-                return {
-                    currentPage: page,
-                    totalPage: totalPage,
-                    data: docsView
-                }
+        return {
+                currentPage: page,
+                totalPage: totalPage,
+                data: docsView
             }
-            else throw new HttpException("Page is not exis", HttpStatus.NOT_FOUND)
-        }
-        else {
-            return this.customerModel.find()
-        }     
+
     }
     async getById(_id: string) {
         return this.customerModel.findById(_id)
@@ -50,14 +45,10 @@ export class CustomerRepository {
 
     async delete(_id: string) {
         const findCustomer = await this.customerModel.find({_id: _id})
-        if (findCustomer && findCustomer.length !== 0){
-            const typeInProject = await this.projectRepo.findOne({type:_id})
-            if (!typeInProject || typeInProject.length == 0) {
-                await this.customerModel.findByIdAndDelete(_id)
-                return "You have successfully deleted"
-            }
-            else throw new HttpException("You can not delete", HttpStatus.NOT_ACCEPTABLE)
-        }
-        else throw new HttpException("Not found",HttpStatus.NOT_FOUND)
+        if(!findCustomer || findCustomer.length === 0) throw new HttpException("Not found",HttpStatus.NOT_FOUND)
+        const typeInProject = await this.projectRepo.findOne({type: _id})
+        if(typeInProject && typeInProject.length !== 0) throw new HttpException("You can not delete", HttpStatus.NOT_ACCEPTABLE)
+        await this.customerModel.findByIdAndDelete(_id)
+        return "You have successfully deleted"
     }
 }

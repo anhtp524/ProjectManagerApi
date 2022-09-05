@@ -16,30 +16,23 @@ export class TeamRepository {
     async getAll(limit ?: number, page :number = 1) {
         const totalDocs = await this.teamModel.countDocuments()
         const totalPage = Math.ceil(totalDocs / limit)
-
-        if(limit) {
-            if(page <= totalPage) {
-                const docsView = await this.teamModel  
+        if(!limit) return this.teamModel.find({})
+                                        .populate('manager', "name")
+                                        .populate('member', 'name')
+                                        .populate('project', 'name')
+        if(page > totalPage) throw new HttpException("Page is not exist", HttpStatus.NOT_FOUND)
+        const docsView = await this.teamModel  
                                     .find({})
                                     .skip((page - 1) * limit) 
                                     .limit(limit)
                                     .populate('manager', "name")
                                     .populate('member', 'name')
                                     .populate('project', 'name')
-                return {
-                    currentPage: page,
-                    totalPage: totalPage,
-                    data: docsView
-                }
+        return {
+                currentPage: page,
+                totalPage: totalPage,
+                data: docsView
             }
-            else throw new HttpException("Page is not exis", HttpStatus.NOT_FOUND)
-        }
-        else {
-            return this.teamModel.find({})
-                                .populate('manager', "name")
-                                .populate('member', 'name')
-                                .populate('project', 'name')
-        }     
     }
 
     async getById(_id: string) {

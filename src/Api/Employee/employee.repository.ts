@@ -21,25 +21,18 @@ export class EmployeeRepository {
     async getAll(limit ?: number, page :number = 1) {
         const totalDocs = await this.employeeModel.countDocuments()
         const totalPage = Math.ceil(totalDocs / limit)
-
-        if(limit) {
-            if(page <= totalPage) {
-                const docsView = await this.employeeModel  
+        if(!limit) return this.employeeModel.find().populate("technology", "name")
+        if(page > totalPage) throw new HttpException("Page is not exist", HttpStatus.NOT_FOUND)
+        const docsView = await this.employeeModel  
                                     .find({})
                                     .skip((page - 1) * limit) 
                                     .limit(limit)
                                     .populate("technology", "name")
-                return {
-                    currentPage: page,
-                    totalPage: totalPage,
-                    data: docsView
-                }
-            }
-            else throw new HttpException("Page is not exis", HttpStatus.NOT_FOUND)
+        return {
+                currentPage: page,
+                totalPage: totalPage,
+                data: docsView
         }
-        else {
-            return this.employeeModel.find().populate("technology", "name")
-        }     
     }
 
     async getById(_id: string) {
@@ -52,16 +45,13 @@ export class EmployeeRepository {
 
     async delete(_id: string) {
         const findEmployee = await this.employeeModel.find({_id: _id})
-        if (findEmployee && findEmployee.length !== 0){
-            const employeeInProject = await this.projectRepo.findOne({member:_id})
-            const employeeInTeam = await this.teamRepo.findOne({member:_id})
-            if ((!employeeInProject || employeeInProject.length == 0) && (!employeeInTeam || employeeInTeam.length == 0)) {
-                await this.employeeModel.findByIdAndDelete(_id)
-                return "You have successfully deleted"
-            }
-            else throw new HttpException("You can not delete", HttpStatus.NOT_ACCEPTABLE)
-        }
-        else throw new HttpException("Not found",HttpStatus.NOT_FOUND)
+        if (!findEmployee || findEmployee.length === 0) throw new HttpException("Not found",HttpStatus.NOT_FOUND)
+        const employeeInProject = await this.projectRepo.findOne({member:_id})
+        const employeeInTeam = await this.teamRepo.findOne({member:_id})
+        if ((employeeInProject && employeeInProject.length !== 0) || 
+            (employeeInTeam && employeeInTeam.length !== 0)) throw new HttpException("You can not delete", HttpStatus.NOT_ACCEPTABLE)
+        await this.employeeModel.findByIdAndDelete(_id)
+        return "You have successfully deleted"
     }
 
     async findOne(condition: any) {

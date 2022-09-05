@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { Account, AccountDocument } from "./account.schema";
@@ -13,8 +13,21 @@ export class AccountRepository {
         return await newAccount.save()
     }
 
-    async getAll() {
-        return await this.accountModel.find()
+    async getAll(limit ?: number, page : number = 1) {
+        const totalDocs = await this.accountModel.countDocuments()
+        const totalPage = Math.ceil(totalDocs / limit)
+
+        if(!limit) return this.accountModel.find()
+        if(page > totalPage) throw new HttpException("Page is not exist", HttpStatus.NOT_FOUND)
+        const docsView = await this.accountModel  
+                                    .find({})
+                                    .skip((page - 1) * limit) 
+                                    .limit(limit)
+        return {
+                currentPage: page,
+                totalPage: totalPage,
+                data: docsView
+            }
     }
 
     async getById(_id: string) {

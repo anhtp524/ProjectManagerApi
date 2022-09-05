@@ -20,24 +20,17 @@ export class StatusRepository {
     async getAll(limit ?: number, page :number = 1) {
         const totalDocs = await this.statusModel.countDocuments()
         const totalPage = Math.ceil(totalDocs / limit)
-
-        if(limit) {
-            if(page <= totalPage) {
-                const docsView = await this.statusModel  
+        if(!limit) return this.statusModel.find()
+        if(page > totalPage) throw new HttpException("Page is not exis", HttpStatus.NOT_FOUND)
+        const docsView = await this.statusModel  
                                     .find({})
                                     .skip((page - 1) * limit) 
                                     .limit(limit)
-                return {
-                    currentPage: page,
-                    totalPage: totalPage,
-                    data: docsView
-                }
+        return {
+                currentPage: page,
+                totalPage: totalPage,
+                data: docsView
             }
-            else throw new HttpException("Page is not exis", HttpStatus.NOT_FOUND)
-        }
-        else {
-            return this.statusModel.find()
-        }     
     }
 
     async getById(_id: string) {
@@ -50,14 +43,10 @@ export class StatusRepository {
 
     async delete(_id: string) {
         const findStatusProject = await this.statusModel.find({_id: _id})
-        if (findStatusProject && findStatusProject.length !== 0){
-            const statusInProject = await this.projectRepo.findOne({type:_id})
-            if (!statusInProject || statusInProject.length == 0) {
-                await this.statusModel.findByIdAndDelete(_id)
-                return "You have successfully deleted"
-            }
-            else throw new HttpException("You can not delete", HttpStatus.NOT_ACCEPTABLE)
-        }
-        else throw new HttpException("Not found",HttpStatus.NOT_FOUND)
+        if (!findStatusProject || findStatusProject.length === 0) throw new HttpException("Not found",HttpStatus.NOT_FOUND)
+        const statusInProject = await this.projectRepo.findOne({type:_id}) 
+        if (statusInProject && statusInProject.length !== 0) throw new HttpException("You can not delete", HttpStatus.NOT_ACCEPTABLE)
+        await this.statusModel.findByIdAndDelete(_id)
+        return "You have successfully deleted"
     }
 }
