@@ -1,4 +1,4 @@
-import { Body, ClassSerializerInterceptor, Controller, Delete, Get, Param, Patch, Post, Query, Req, UseGuards, UseInterceptors } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, Req, UseGuards, UseInterceptors } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import { SanitizeMongooseModelInterceptor } from "nestjs-mongoose-exclude";
 import { RolesGuard } from "src/Auth/guard/role.guard";
@@ -20,7 +20,7 @@ export class AccountController {
     @UseInterceptors(new SanitizeMongooseModelInterceptor({excludeMongooseId: false, excludeMongooseV: true}))
     @Get()
     getAllAccout(@Query() {limit, page}: {limit: number, page: number}) {
-        return this.accountService.getAllAccount()
+        return this.accountService.getAllAccount(limit,page)
     }
 
     @Get('/infor')
@@ -28,7 +28,7 @@ export class AccountController {
         return req.user
     }
 
-    @UseInterceptors(new SanitizeMongooseModelInterceptor())
+    @UseInterceptors(new SanitizeMongooseModelInterceptor({excludeMongooseId: false, excludeMongooseV: true}))
     @Get('/:id')
     async getAccountById(@Param('id') id: string): Promise<Account> {
         return await this.accountService.getAccountById(id)

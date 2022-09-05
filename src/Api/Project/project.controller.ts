@@ -1,12 +1,17 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from "@nestjs/common";
+import { AuthGuard } from "@nestjs/passport";
+import { RolesGuard } from "src/Auth/guard/role.guard";
+import { Role } from "../Account/enum/role.enum";
 import { CreateProjectDto, UpdateProjectDto } from "./dto/project.dto";
 import { ProjectService } from "./project.service";
 
 @Controller('/project')
+@UseGuards(AuthGuard('jwt'))
 export class ProjectController {
     constructor(private projectService: ProjectService) {}
 
     @Post()
+    @UseGuards(new RolesGuard(Role.ADMIN))
     createProject(@Body() newProject: CreateProjectDto) {
         return this.projectService.createProject(newProject)
     }
@@ -32,11 +37,13 @@ export class ProjectController {
     }
 
     @Patch('/:id')
+    @UseGuards(new RolesGuard(Role.ADMIN))
     updateProject(@Param('id') id: string, @Body() updateProject: UpdateProjectDto) {
         return this.projectService.updateProject(id, updateProject)
     }
 
     @Delete(':id')
+    @UseGuards(new RolesGuard(Role.ADMIN))
     deleteProject(@Param('id') id: string) {
         return this.projectService.deleteProject(id)
     }

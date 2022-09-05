@@ -1,12 +1,17 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from "@nestjs/common";
+import { AuthGuard } from "@nestjs/passport";
+import { RolesGuard } from "src/Auth/guard/role.guard";
+import { Role } from "../Account/enum/role.enum";
 import { CreateProjectTypeDto, UpdateProjectTypeDto } from "./dto/typeProject.dto";
 import { TypeProjectService } from "./typeProject.service";
 
 @Controller('/typeproject')
+@UseGuards(AuthGuard('jwt'))
 export class TypeProjectController {
     constructor(private typeService: TypeProjectService) {}
 
     @Post()
+    @UseGuards(new RolesGuard(Role.ADMIN))
     createType(@Body() newType: CreateProjectTypeDto) {
         return this.typeService.createType(newType)
     }
@@ -22,11 +27,13 @@ export class TypeProjectController {
     }
 
     @Patch('/:id')
+    @UseGuards(new RolesGuard(Role.ADMIN))
     updateTypeProject(@Param('id') id: string, @Body() updateType: UpdateProjectTypeDto) {
         return this.typeService.updateType(id, updateType)
     }
 
     @Delete(':id')
+    @UseGuards(new RolesGuard(Role.ADMIN))
     deleteTypeProject(@Param('id') id: string) {
         return this.typeService.deleteType(id)
     }
