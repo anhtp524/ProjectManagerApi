@@ -22,8 +22,8 @@ export class EmployeeController {
     }
     
     @Get('statistical')
-    countEmployees(@Query() {technology}: {technology: string}) {
-        return this.employeeService.countEmployees(technology)
+    countEmployees(@Query() {technology, project}: {technology ?: string, project ?: string}) {
+        return this.employeeService.countEmployees(technology,project)
     }
 
     @Get('/:id')

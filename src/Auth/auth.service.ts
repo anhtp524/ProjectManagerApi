@@ -16,15 +16,13 @@ export class AuthService {
 
     async signIn(acc: LoginDto) {
         const account = await this.accountRepo.findOne({username: acc.username})
-        //console.log(account);
-        
         if(!account) throw new UnauthorizedException("Account does not exist");
         const checkPassword = await bcrypt.compare(acc.password, account.password)
         if(!checkPassword) throw new UnauthorizedException("Password is wrong");
 
         const accessKey = this.configService.get("accessTokenKey")
         const refreshKey = this.configService.get("refreshTokenKey")
-        const accessToken = await this.signToken(account, accessKey, "5m")
+        const accessToken = await this.signToken(account, accessKey, "15m")
         const refreshToken = await  this.signToken(account, refreshKey, "2592000s")
         const encodeRT = await bcrypt.hash(refreshToken,10)
         await this.accountRepo.update(account._id, {refreshToken: encodeRT})
@@ -53,7 +51,7 @@ export class AuthService {
 
             const payload = await this.jwtService.verify(token, {secret: this.configService.get("refreshTokenKey")})
             if(!payload) throw new HttpException("Invalid token", HttpStatus.UNAUTHORIZED)
-            const newAccessToken = this.jwtService.sign({sub: payload.sub}, {secret: "accessKey", expiresIn: "5m"})
+            const newAccessToken = this.jwtService.sign({sub: payload.sub}, {secret: "accessKey", expiresIn: "15m"})
             return {
                 new_accsessToken: newAccessToken
             }

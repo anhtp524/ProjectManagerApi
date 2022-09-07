@@ -58,24 +58,23 @@ export class EmployeeRepository {
         return this.employeeModel.find(condition)
     }
 
-    async countEmployee(technology ?: string) {
-        let filter = {technology: technology}
-        try {
-            let query = {}
-            for (let [key,value] of Object.entries(filter)) {
-                if (value) {
-                    query[key] = value
-                }
+    async countEmployee(technology ?: string, project ?: string) {
+        if (project) {
+            const dataOfQuery = await this.projectRepo.findMember(project,technology)
+            return {
+                amount: dataOfQuery.length,
+                data: dataOfQuery
             }
-            
-            const numberProject = await this.employeeModel.countDocuments(query)
-                return {
-                    filter: query,
-                    amount : numberProject
-                }
         }
-        catch(err) {
-            return new HttpException("Not count", HttpStatus.NOT_FOUND)
+
+        if (technology) {
+            const dataOfQuery = await this.employeeModel.find({technology: technology})
+            return {
+                amount: dataOfQuery.length,
+                data: dataOfQuery
+            }
         }
+
+        return await this.employeeModel.find().populate("technology", "name")
     }
 }

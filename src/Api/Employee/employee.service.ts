@@ -41,7 +41,7 @@ export class EmployeeService {
         return this.employeeRepo.delete(id)
     }
 
-    countEmployees(technology ?: string) {
-        return this.employeeRepo.countEmployee(technology)
+    countEmployees(technology ?: string, project ?: string) {
+        return this.employeeRepo.countEmployee(technology, project)
     }
 }

@@ -46,16 +46,30 @@ export class ProjectRepository {
 
     async getById(_id: string) {
         return this.projectModel
-                .findById(_id)
-                .populate('typeProject' ,'name')
-                .populate('status', 'name')
-                .populate('technology', 'name')
-                .populate('member','name')
-                .populate('customer', 'name')
+                    .findById(_id)
+                    .populate('typeProject' ,'name')
+                    .populate('status', 'name')
+                    .populate('technology', 'name')
+                    .populate('member','name')
+                    .populate('customer', 'name')
     }
 
     async findOne(condition: any) {
         return await this.projectModel.find(condition)
+    }
+
+    async findMember(_id: string, technology ?: string) {
+        if(technology) {
+            const result = await this.projectModel.findById({_id: _id}, "member").populate({
+                path: 'member',
+                match: {technology: technology} 
+            })
+            return result.member
+        }
+
+        const result = await this.projectModel.findById({_id: _id}).populate("member")
+        return result.member
+        
     }
  
     async update(_id: string,item: any) {
@@ -76,37 +90,31 @@ export class ProjectRepository {
     }
 
     async countProjectWithCondition(status ?: string, type ?: string, technology ?: string, customer ?: string, date ?: string) {
-        let filter
+        let filter : any = {
+            status: status,
+            typeProject: type,
+            technology: technology,
+            customer: customer
+        }
         try {
             if(date) {
                 filter = {
-                    status: status,
-                    typeProject: type,
-                    technology: technology,
-                    customer: customer,
+                    ...filter,
                     startDate: new Date(date)
                 }
             }
-            else {
-                filter = {
-                    status: status,
-                    typeProject: type,
-                    technology: technology,
-                    customer: customer,
-                }
-            }
-            
             let query = {}
             for (let [key,value] of Object.entries(filter)) {
                 if (value) {
                     query[key] = value
                 }
             }
+            const dataOfQuery = await this.projectModel.find(query)
             
-            const numberProject = await this.projectModel.countDocuments(query)
                 return {
                     filter: query,
-                    amount : numberProject
+                    amount: dataOfQuery.length,
+                    data: dataOfQuery
                 }
         }
         catch(err) {
