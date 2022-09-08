@@ -1,5 +1,6 @@
-import { Module } from '@nestjs/common';
+import { Module, ValidationPipe } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { APP_PIPE } from '@nestjs/core';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AccountModule } from './Api/Account/account.module';
 import { CustomerModule } from './Api/Customer/customer.module';
@@ -29,5 +30,11 @@ import { configuration } from './Config/configuration';
     TeamModule,
     AuthModule
   ], 
+  providers: [
+    {
+      provide: APP_PIPE,
+      useClass: ValidationPipe,
+    },
+  ],
 })
 export class AppModule {}

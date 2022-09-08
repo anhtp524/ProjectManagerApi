@@ -37,11 +37,9 @@ export class UpdateProjectDto {
     @IsString()
     status: string
 
-    @IsString()
     @IsArray()
     technology: string[]
 
-    @IsString()
     @IsArray()
     member: string[]
 
