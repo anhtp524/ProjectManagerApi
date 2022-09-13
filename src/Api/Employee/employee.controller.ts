@@ -1,10 +1,13 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
+import { ApiBearerAuth, ApiQuery, ApiTags } from "@nestjs/swagger";
 import { RolesGuard } from "src/Auth/guard/role.guard";
 import { Role } from "../Account/enum/role.enum";
 import { CreateEmployeeDto, UpdateEmployeeDto } from "./dto/employee.dto";
 import { EmployeeService } from "./employee.service";
 
+@ApiBearerAuth()
+@ApiTags("Employee")
 @Controller('/employee')
 @UseGuards(AuthGuard('jwt'))
 export class EmployeeController {
@@ -16,11 +19,15 @@ export class EmployeeController {
         return this.employeeService.createEmployee(newEmployee)
     }
 
+    @ApiQuery({name : "limit", required: false})
+    @ApiQuery({name : "page", required: false})
     @Get()
     getAllEmployee(@Query() {limit, page} : {limit: number, page: number}) {
         return this.employeeService.getAllEmployee(limit, page)
     }
     
+    @ApiQuery({name : "technology", required: false})
+    @ApiQuery({name : "project", required: false})
     @Get('statistical')
     countEmployees(@Query() {technology, project}: {technology ?: string, project ?: string}) {
         return this.employeeService.countEmployees(technology,project)

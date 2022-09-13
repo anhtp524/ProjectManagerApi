@@ -41,7 +41,7 @@ export class AuthService {
         return token
     }
 
-    async signAccessTokenFromRefreshToken(item: any) {
+    async signAccessTokenFromRefreshToken(item: RefreshTokenDto) {
         const {token, username} = item     
         try {
             const account = await this.accountRepo.findOne({username: username})

@@ -1,10 +1,13 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
+import { ApiBearerAuth, ApiQuery, ApiTags } from "@nestjs/swagger";
 import { RolesGuard } from "src/Auth/guard/role.guard";
 import { Role } from "../Account/enum/role.enum";
 import { CreateTechnologyDto, UpdateTechnologyDto } from "./dto/technology.dto";
 import { TechnologyService } from "./technology.service";
 
+@ApiBearerAuth()
+@ApiTags("Technology")
 @Controller('/technology')
 @UseGuards(AuthGuard('jwt'))
 export class TechnologyController {
@@ -16,6 +19,8 @@ export class TechnologyController {
         return this.technologyService.createTechnology(newTech)
     }
 
+    @ApiQuery({name : "limit", required: false, type: 'integer'})
+    @ApiQuery({name : "page", required: false, type: 'integer'})
     @Get()
     getAllTechnology(@Query() {limit, page} : {limit: number, page: number}) {
         return this.technologyService.getAllTechnology(limit, page)

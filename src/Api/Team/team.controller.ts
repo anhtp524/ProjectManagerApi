@@ -1,11 +1,13 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
+import { ApiBearerAuth, ApiQuery, ApiTags } from "@nestjs/swagger";
 import { RolesGuard } from "src/Auth/guard/role.guard";
 import { Role } from "../Account/enum/role.enum";
 import { CreateTeamDto, UpdateTeamDto } from "./dto/team.dto";
 import { TeamService } from "./team.service";
 
-
+@ApiBearerAuth()
+@ApiTags("Team")
 @Controller('/team')
 @UseGuards(AuthGuard('jwt'))
 export class TeamController {
@@ -17,6 +19,8 @@ export class TeamController {
         return this.teamService.createTeam(newTeam)
     }
 
+    @ApiQuery({name : "limit", required: false})
+    @ApiQuery({name : "page", required: false})
     @Get()
     getAllTeam(@Query() {limit, page} : {limit: number, page: number}) {
         return this.teamService.getAllTeam(limit, page)

@@ -1,10 +1,13 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
+import { ApiBearerAuth, ApiQuery, ApiTags } from "@nestjs/swagger";
 import { RolesGuard } from "src/Auth/guard/role.guard";
 import { Role } from "../Account/enum/role.enum";
 import { CustomerService } from "./customer.service";
 import { CreateCustomerDto, UpdateCustomerDto } from "./dto/customer.dto";
 
+@ApiBearerAuth()
+@ApiTags("Customer")
 @Controller('/customer')
 @UseGuards(AuthGuard('jwt'))
 export class CustomerController {
@@ -15,7 +18,9 @@ export class CustomerController {
     createCustomer(@Body() newCustomer: CreateCustomerDto) {
         return this.customerService.createCustomer(newCustomer)
     }
-
+    
+    @ApiQuery({name : "limit", required: false})
+    @ApiQuery({name : "page", required: false})
     @Get()
     getAllCustomer(@Query() {limit, page}: {limit: number, page: number}) {
         return this.customerService.getAllCustomer(limit, page)

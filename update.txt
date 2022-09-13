@@ -1,0 +1,8 @@
++ create base Repository
++ create base for all Respone
+ - create: return status Success
+ - get all/ get id: Return result
+ - delete: return status Success
++ send mail to verify account
++ try/catch 
++ upload file

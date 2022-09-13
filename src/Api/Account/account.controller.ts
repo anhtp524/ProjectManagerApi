@@ -1,5 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query, Req, UseGuards, UseInterceptors } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
+import { ApiBearerAuth, ApiQuery, ApiTags } from "@nestjs/swagger";
 import { SanitizeMongooseModelInterceptor } from "nestjs-mongoose-exclude";
 import { RolesGuard } from "src/Auth/guard/role.guard";
 import { Account } from "./account.schema";
@@ -7,6 +8,9 @@ import { AccountService } from "./account.service";
 import { CreateAccountDto, UpdateAccountDto } from "./dto/account.dto";
 import { Role } from "./enum/role.enum";
 
+
+@ApiBearerAuth()
+@ApiTags("Account")
 @Controller('/account')
 @UseGuards(AuthGuard('jwt'), new RolesGuard(Role.ADMIN))
 export class AccountController {
@@ -17,6 +21,9 @@ export class AccountController {
         return this.accountService.createAccount(newAccount)
     }
 
+
+    @ApiQuery({name : "limit", required: false})
+    @ApiQuery({name : "page", required: false})
     @UseInterceptors(new SanitizeMongooseModelInterceptor({excludeMongooseId: false, excludeMongooseV: true}))
     @Get()
     getAllAccout(@Query() {limit, page}: {limit: number, page: number}) {
