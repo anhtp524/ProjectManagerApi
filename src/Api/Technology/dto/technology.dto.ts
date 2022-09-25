@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsNotEmpty, IsString } from "class-validator";
+import { IsNotEmpty, IsOptional, IsString } from "class-validator";
 
 export class CreateTechnologyDto {
     @ApiProperty()
@@ -15,7 +15,12 @@ export class CreateTechnologyDto {
 
 export class UpdateTechnologyDto {
     @ApiProperty()
-    @IsNotEmpty()
+    @IsOptional()
+    @IsString()
+    name: string
+
+    @ApiProperty()
+    @IsOptional()
     @IsString()
     status: string
 }

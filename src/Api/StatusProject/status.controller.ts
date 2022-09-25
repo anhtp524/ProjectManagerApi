@@ -2,6 +2,7 @@ import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } f
 import { AuthGuard } from "@nestjs/passport";
 import { ApiBearerAuth, ApiQuery, ApiTags } from "@nestjs/swagger";
 import { RolesGuard } from "src/Auth/guard/role.guard";
+import { PaginationDto } from "src/Share/Dtos/pagination.dto";
 import { Role } from "../Account/enum/role.enum";
 import { CreateStatusDto, UpdateStatusDto } from "./dto/status.dto";
 import { StatusService } from "./status.service";
@@ -19,11 +20,12 @@ export class StatusController {
         return this.statusService.createStatus(newStatus)
     }
 
-    @ApiQuery({name : "limit", required: false})
-    @ApiQuery({name : "page", required: false})
+    @ApiQuery({name : "limit", required: false, type: 'integer'})
+    @ApiQuery({name : "page", required: false, type: 'integer'})
+    @ApiQuery({name : "search", required: false, type: 'string'})
     @Get()
-    getAllStatusProject(@Query() {limit, page}: {limit: number, page: number}) {
-        return this.statusService.getAllStatus(limit, page)
+    getAllStatusProject(@Query() {limit, page, search}: PaginationDto) {
+        return this.statusService.getAllStatus(limit, page, search)
     }
 
     @Get('/:id')

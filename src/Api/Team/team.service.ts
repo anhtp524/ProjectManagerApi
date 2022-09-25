@@ -2,6 +2,7 @@ import { Injectable } from "@nestjs/common";
 import mongoose from "mongoose";
 import { CreateTeamDto, UpdateTeamDto } from "./dto/team.dto";
 import { TeamRepository } from "./team.repository";
+import { TeamDocument } from "./team.schema";
 
 @Injectable()
 export class TeamService {
@@ -25,11 +26,11 @@ export class TeamService {
             project: projectId
         }        
 
-        return this.teamRepo.create(newTeam)
+        return this.teamRepo.create(<TeamDocument>newTeam)
     }
 
-    getAllTeam(limit ?: number, page ?: number) {
-        return this.teamRepo.getAll(limit, page)
+    getAllTeam(limit ?: number, page ?: number, search ?: string) {
+        return this.teamRepo.getAll(limit, page, search)
     }
 
     getTeamById(id: string) {

@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { CreateTechnologyDto, UpdateTechnologyDto } from "./dto/technology.dto";
 import { TechnologyRepository } from "./technology.repository";
+import { TechnologyDocument } from "./technology.schema";
 
 
 @Injectable()
@@ -8,11 +9,11 @@ export class TechnologyService {
     constructor(private technologyRepo: TechnologyRepository) {}
 
     createTechnology(newTech: CreateTechnologyDto) {
-        return this.technologyRepo.create(newTech)
+        return this.technologyRepo.create(<TechnologyDocument>newTech)
     }
 
-    getAllTechnology(limit ?: number, page ?: number) {
-        return this.technologyRepo.getAll(limit, page)
+    getAllTechnology(limit ?: number, page ?: number, search ?: string) {
+        return this.technologyRepo.getAll(limit, page, search)
     }
 
     getTechnologyById(id: string) {

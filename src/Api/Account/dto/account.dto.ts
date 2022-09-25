@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsNotEmpty, IsString } from "class-validator";
+import { IsNotEmpty, IsOptional, IsString } from "class-validator";
 import { Role } from "../enum/role.enum";
 
 export class CreateAccountDto {
@@ -22,22 +22,46 @@ export class CreateAccountDto {
     @IsNotEmpty()
     role: Role
 
+    @IsString()
+    @IsOptional()
+    @ApiProperty({
+        type: 'string',
+    })
+    avatarUrl: string
+
 }
 
 export class UpdateAccountDto {
     
     @ApiProperty()
-    username?: string
+    @IsString()
+    @IsOptional()
+    username: string
 
     @ApiProperty()
-    password?: string
+    @IsString()
+    @IsOptional()
+    password: string
 
     @ApiProperty()
-    name?: string
+    @IsString()
+    @IsOptional()
+    name: string
 
-    @ApiProperty()
-    role?: Role
+    @ApiProperty({enum: Role})
+    @IsOptional()
+    role: Role
     
     @ApiProperty()
-    refreshToken?: string
+    @IsString()
+    @IsOptional()
+    refreshToken: string
+
+    @IsString()
+    @IsOptional()
+    @ApiProperty({
+        type: 'string',
+        format: 'binary',
+    })
+    avatarUrl: string;
 }

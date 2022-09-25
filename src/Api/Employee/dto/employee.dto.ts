@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Type } from "class-transformer";
-import { IsArray, IsDate, IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { IsArray, IsDate, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 
 export class CreateEmployeeDto {
     @ApiProperty()
@@ -49,21 +49,26 @@ export class CreateEmployeeDto {
 export class UpdateEmployeeDto {
     @ApiProperty()
     @IsString()
+    @IsOptional()
     address: string;
 
     @ApiProperty()
     @IsString()
+    @IsOptional()
     phoneNumber: string;
 
     @ApiProperty()
     @IsArray()
+    @IsOptional()
     technology: string[]
 
     @ApiProperty()
     @IsArray()
+    @IsOptional()
     language: string[]
 
     @ApiProperty()
     @IsArray()
+    @IsOptional()
     certificate: string[]
 }

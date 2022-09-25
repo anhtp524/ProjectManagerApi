@@ -2,6 +2,7 @@ import { Injectable } from "@nestjs/common";
 import mongoose from "mongoose";
 import { CreateProjectDto, UpdateProjectDto } from "./dto/project.dto";
 import { ProjectRepository } from "./project.repository";
+import { ProjectDocument } from "./project.schema";
 
 @Injectable()
 export class ProjectService {
@@ -30,11 +31,11 @@ export class ProjectService {
             customer: customerId
         }        
 
-        return this.projectRepo.create(newProject)
+        return this.projectRepo.create(<ProjectDocument>newProject)
     }
 
-    getAllProject(limit ?: number, page ?: number) {
-        return this.projectRepo.getAll(limit, page)
+    getAllProject(limit ?: number, page ?: number, search ?: string) {
+        return this.projectRepo.getAll(limit, page, search)
     }
 
     getProjectById(id: string) {

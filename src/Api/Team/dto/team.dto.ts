@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Type } from "class-transformer";
-import { IsArray, IsDate, IsNotEmpty, IsString } from "class-validator";
+import { IsArray, IsDate, IsNotEmpty, IsOptional, IsString } from "class-validator";
 
 export class CreateTeamDto {
     @ApiProperty()
@@ -13,7 +13,7 @@ export class CreateTeamDto {
     @IsString()
     description: string
 
-    @ApiProperty()
+    @ApiProperty({type: Date})
     @IsNotEmpty()
     @IsDate()
     @Type(() => Date)
@@ -35,30 +35,33 @@ export class CreateTeamDto {
 
 export class UpdateTeamDto {
     @ApiProperty()
-    @IsNotEmpty()
+    @IsOptional()
     @IsString()
     name: string
 
     @ApiProperty()
-    @IsNotEmpty()
+    @IsOptional()
     @IsString()
     description: string
 
     @ApiProperty()
-    @IsNotEmpty()
+    @IsOptional()
     @IsDate()
+    @Type(() => Date)
     founding: Date
 
     @ApiProperty()
-    @IsNotEmpty()
+    @IsOptional()
     @IsString()
     manager: string
 
     @ApiProperty()
+    @IsOptional()
     @IsArray()
     member: string[]
 
     @ApiProperty()
+    @IsOptional()
     @IsArray()
     project: string[]
 }

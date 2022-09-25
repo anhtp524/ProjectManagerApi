@@ -5,7 +5,7 @@ import { Role } from "./enum/role.enum";
 
 export type AccountDocument = Account & Document
 
-@Schema()
+@Schema({timestamps: true})
 export class Account {
     @Prop({required: true, unique: true})
     username: string
@@ -23,7 +23,8 @@ export class Account {
     @Prop({type: String})
     refreshToken: string
 
-
+    @Prop()
+    avatarUrl: string
 }
 
 export const AccountSchema = SchemaFactory.createForClass(Account)

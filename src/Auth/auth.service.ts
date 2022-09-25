@@ -15,7 +15,7 @@ export class AuthService {
         private configService: ConfigService) {}
 
     async signIn(acc: LoginDto) {
-        const account = await this.accountRepo.findOne({username: acc.username})
+        const account = await this.accountRepo.getOne({username: acc.username})
         if(!account) throw new UnauthorizedException("Account does not exist");
         const checkPassword = await bcrypt.compare(acc.password, account.password)
         if(!checkPassword) throw new UnauthorizedException("Password is wrong");
@@ -44,7 +44,7 @@ export class AuthService {
     async signAccessTokenFromRefreshToken(item: RefreshTokenDto) {
         const {token, username} = item     
         try {
-            const account = await this.accountRepo.findOne({username: username})
+            const account = await this.accountRepo.getOne({username: username})
             if(!account) throw new HttpException('Invalid Token', HttpStatus.UNAUTHORIZED);
             const checkRT = await bcrypt.compare(token, account.refreshToken)
             if (!checkRT || account.refreshToken === null) throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
@@ -61,7 +61,7 @@ export class AuthService {
         }
     }
 
-     async logOut(id: string) {
+    async logOut(id: string) {
         await this.accountRepo.update(id, {refreshToken: null})
         return "Logout Success"
     }

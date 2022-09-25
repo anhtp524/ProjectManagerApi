@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { CreateStatusDto, UpdateStatusDto } from "./dto/status.dto";
 import { StatusRepository } from "./status.repository";
+import { StatusDocument } from "./status.schema";
 
 
 @Injectable()
@@ -8,11 +9,11 @@ export class StatusService {
     constructor(private statusRepo: StatusRepository) {}
 
     createStatus(newStatus: CreateStatusDto) {
-        return this.statusRepo.create(newStatus)
+        return this.statusRepo.create(<StatusDocument>newStatus)
     }
 
-    getAllStatus(limit ?: number, page ?: number) {
-        return this.statusRepo.getAll(limit, page)
+    getAllStatus(limit ?: number, page ?: number, search ?: string) {
+        return this.statusRepo.getAll(limit, page, search)
     }
 
     getStatusById(id: string) {

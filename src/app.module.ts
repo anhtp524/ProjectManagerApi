@@ -1,5 +1,5 @@
 import { Module, ValidationPipe } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_PIPE } from '@nestjs/core';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AccountModule } from './Api/Account/account.module';
@@ -17,9 +17,10 @@ import { configuration } from './Config/configuration';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [configuration]
+      load: [configuration],
+      envFilePath: './.env'
     }),
-    MongooseModule.forRoot('mongodb://localhost:27017/projectmanager'),
+    MongooseModule.forRoot(new ConfigService().get<string>('MONGODB_URL')),
     TypeProjectModule, 
     StatusModule, 
     TechnologyModule,

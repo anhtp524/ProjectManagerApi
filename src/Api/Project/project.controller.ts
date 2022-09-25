@@ -2,6 +2,7 @@ import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } f
 import { AuthGuard } from "@nestjs/passport";
 import { ApiBearerAuth, ApiQuery, ApiTags } from "@nestjs/swagger";
 import { RolesGuard } from "src/Auth/guard/role.guard";
+import { PaginationDto } from "src/Share/Dtos/pagination.dto";
 import { Role } from "../Account/enum/role.enum";
 import { CreateProjectDto, UpdateProjectDto } from "./dto/project.dto";
 import { ProjectService } from "./project.service";
@@ -19,11 +20,12 @@ export class ProjectController {
         return this.projectService.createProject(newProject)
     }
 
-    @ApiQuery({name : "limit", required: false})
-    @ApiQuery({name : "page", required: false})
+    @ApiQuery({name : "limit", required: false, type: 'integer'})
+    @ApiQuery({name : "page", required: false, type: 'integer'})
+    @ApiQuery({name : "search", required: false, type: 'string'})
     @Get()
-    getAllProject(@Query() {limit, page} : {limit: number, page: number}) {
-        return this.projectService.getAllProject(limit,page)
+    getAllProject(@Query() {limit, page, search} : PaginationDto) {
+        return this.projectService.getAllProject(limit, page, search)
     }
 
     @Get('statistical')

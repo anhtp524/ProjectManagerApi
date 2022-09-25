@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Type } from "class-transformer";
-import { IsArray, IsDate, IsNotEmpty, IsString } from "class-validator";
+import { IsArray, IsDate, IsNotEmpty, IsOptional, IsString } from "class-validator";
 
 export class CreateProjectDto {
     @ApiProperty()
@@ -41,21 +41,26 @@ export class CreateProjectDto {
 export class UpdateProjectDto {
     @ApiProperty()
     @IsString()
+    @IsOptional()
     description: string
 
     @ApiProperty()
     @IsString()
+    @IsOptional()
     status: string
 
     @ApiProperty()
     @IsArray()
+    @IsOptional()
     technology: string[]
 
     @ApiProperty()
     @IsArray()
+    @IsOptional()
     member: string[]
 
     @ApiProperty()
     @IsString()
+    @IsOptional()
     customer: string
 }

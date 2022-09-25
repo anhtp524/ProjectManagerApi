@@ -1,5 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { CustomerRepository } from "./customer.repository";
+import { CustomerDocument } from "./customer.schema";
 import { CreateCustomerDto, UpdateCustomerDto } from "./dto/customer.dto";
 
 
@@ -8,19 +9,19 @@ export class CustomerService {
     constructor(private customerRepo: CustomerRepository) {}
 
     createCustomer(newCustomer: CreateCustomerDto) {
-        return this.customerRepo.create(newCustomer)
+        return this.customerRepo.create(<CustomerDocument>newCustomer)
     }
 
-    getAllCustomer(limit ?: number, page ?: number) {
-        return this.customerRepo.getAll(limit, page)
+    getAllCustomer(limit ?: number, page ?: number, search ?: string) {
+        return this.customerRepo.getAll(limit, page, search)
     }
 
     getCustomerById(id: string) {
         return this.customerRepo.getById(id)
     }
 
-    updateCustomer(id: string, updateCustomer: UpdateCustomerDto) {
-        return this.customerRepo.update(id, updateCustomer)
+    async updateCustomer(id: string, updateCustomer: UpdateCustomerDto) {
+        return await this.customerRepo.update(id, updateCustomer)
     }
 
     deleteCustomer(id: string) {

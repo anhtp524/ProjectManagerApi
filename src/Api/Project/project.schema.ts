@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import mongoose, { Types } from "mongoose";
+import mongoose, { Document, Types } from "mongoose";
 import { Customer } from "../Customer/customer.schema";
 import { Employee } from "../Employee/employee.schema";
 import { StatusProject } from "../StatusProject/status.schema";

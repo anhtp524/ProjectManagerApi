@@ -1,38 +1,14 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
+import { Repository } from "src/Share/Database/Repository";
 import { Team, TeamDocument } from "./team.schema";
 
 
 @Injectable()
-export class TeamRepository {
-    constructor(@InjectModel(Team.name) private teamModel: Model<TeamDocument>) {}
-    
-    async create(newItem: any) {
-        const newTeam = new this.teamModel(newItem)
-        return await newTeam.save()
-    }
-
-    async getAll(limit ?: number, page :number = 1) {
-        const totalDocs = await this.teamModel.countDocuments()
-        const totalPage = Math.ceil(totalDocs / limit)
-        if(!limit) return this.teamModel.find({})
-                                        .populate('manager', "name")
-                                        .populate('member', 'name')
-                                        .populate('project', 'name')
-        if(page > totalPage) throw new HttpException("Page is not exist", HttpStatus.NOT_FOUND)
-        const docsView = await this.teamModel  
-                                    .find({})
-                                    .skip((page - 1) * limit) 
-                                    .limit(limit)
-                                    .populate('manager', "name")
-                                    .populate('member', 'name')
-                                    .populate('project', 'name')
-        return {
-                currentPage: page,
-                totalPage: totalPage,
-                data: docsView
-            }
+export class TeamRepository extends Repository<TeamDocument> {
+    constructor(@InjectModel(Team.name) private teamModel: Model<TeamDocument>) {
+        super(teamModel)
     }
 
     async getById(_id: string) {
@@ -41,14 +17,6 @@ export class TeamRepository {
                 .populate('manager', "name")
                 .populate('member', 'name')
                 .populate('project', 'name')
-    }
-
-    async update(_id: string,item: any) {
-        return await this.teamModel.findByIdAndUpdate(_id, item).exec()
-    }
-
-    async delete(_id: string) {
-        return await this.teamModel.findByIdAndDelete(_id)
     }
 
     async findOne(condition: any) {

@@ -1,17 +1,18 @@
 import { Injectable } from "@nestjs/common";
 import { CreateProjectTypeDto, UpdateProjectTypeDto } from "./dto/typeProject.dto";
 import { TypeProjectRepository } from "./typeProject.repository";
+import { TypeProjectDocument } from "./typeProject.schema";
 
 @Injectable()
 export class TypeProjectService {
     constructor(private typeProjectRepo: TypeProjectRepository) {}
 
     createType(newType: CreateProjectTypeDto) {
-        return this.typeProjectRepo.create(newType)
+        return this.typeProjectRepo.create(<TypeProjectDocument>newType)
     }
 
-    getAllType(limit ?: number, page ?: number) {
-        return this.typeProjectRepo.getAll(limit, page)
+    getAllType(limit ?: number, page ?: number, search ?: string) {
+        return this.typeProjectRepo.getAll(limit, page, search)
     }
 
     getTypeById(id: string) {

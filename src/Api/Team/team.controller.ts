@@ -2,6 +2,7 @@ import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } f
 import { AuthGuard } from "@nestjs/passport";
 import { ApiBearerAuth, ApiQuery, ApiTags } from "@nestjs/swagger";
 import { RolesGuard } from "src/Auth/guard/role.guard";
+import { PaginationDto } from "src/Share/Dtos/pagination.dto";
 import { Role } from "../Account/enum/role.enum";
 import { CreateTeamDto, UpdateTeamDto } from "./dto/team.dto";
 import { TeamService } from "./team.service";
@@ -19,11 +20,12 @@ export class TeamController {
         return this.teamService.createTeam(newTeam)
     }
 
-    @ApiQuery({name : "limit", required: false})
-    @ApiQuery({name : "page", required: false})
+    @ApiQuery({name : "limit", required: false, type: 'integer'})
+    @ApiQuery({name : "page", required: false, type: 'integer'})
+    @ApiQuery({name : "search", required: false, type: 'string'})
     @Get()
-    getAllTeam(@Query() {limit, page} : {limit: number, page: number}) {
-        return this.teamService.getAllTeam(limit, page)
+    getAllTeam(@Query() {limit, page, search} : PaginationDto) {
+        return this.teamService.getAllTeam(limit, page, search)
     }
 
     @Get('/:name/member')
